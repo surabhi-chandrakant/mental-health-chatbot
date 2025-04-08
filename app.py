@@ -7,11 +7,14 @@ import torch
 from oauth2client.service_account import ServiceAccountCredentials
 import json
 from io import StringIO
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import streamlit as st
 
 # Set up Google Sheets
 def init_gsheet():
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    json_key = json.loads(st.secrets["gcp_service_account"])
+    json_key = st.secrets["gcp_service_account"]
     creds = ServiceAccountCredentials.from_json_keyfile_dict(json_key, scope)
     client = gspread.authorize(creds)
     sheet = client.open("mood_log").sheet1
