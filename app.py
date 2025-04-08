@@ -5,11 +5,14 @@ import json
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 from oauth2client.service_account import ServiceAccountCredentials
+import json
+from io import StringIO
 
 # Set up Google Sheets
 def init_gsheet():
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("D:\\MIT study\\AWS\\mental_health\\mental-health-buddy-456207-9d7e8dca05f1.json", scope)
+    json_key = json.loads(st.secrets["gcp_service_account"])
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(json_key, scope)
     client = gspread.authorize(creds)
     sheet = client.open("mood_log").sheet1
     return sheet
